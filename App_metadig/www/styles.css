@@ -1,0 +1,29 @@
+.header h2 {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+h3{
+  text-align: center;
+}
+div.row {
+  position: relative;
+  top: 30px;
+}
+
+body{
+  font-family: 'Manrope', sans-serif;
+}
+
+
+.header {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.topleft {
+  position: relative;
+  top: 0px;
+}
