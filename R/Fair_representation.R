@@ -3,16 +3,15 @@ library(metadig)
 library(ggplot2)
 library(broman)
 library(dplyr)
-setwd("C:/Users/tangu/Desktop/Stage_meta/Curation/Curation/tests/checks")
+setwd("C:/Users/tangu/Desktop/metaCure/metaCure")
 dirXML="."
-suite="../Suite.xml"
-metadataFile <-"../Reef_Life_Survey_Fish_Mediterranean_sample.xml"
-  
-metadataFile2 <- "../Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
+suite="../Suite/Suite.xml"
+metadataFile <-"../ex_data/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
 
-metadataFile3 <- "../edi.300.6.xml"
+metadataFile2 <- "../ex_data/Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
 
-suite<-"../Suite.xml"
+metadataFile3 <- "../ex_data/edi.300.6.xml"
+
 
 
 Res1<-runSuite(suite,".",metadataFile)
@@ -57,7 +56,7 @@ Fair_scores<-function(Res,dirXML="."){
       }
     }
     if (all[i][[1]]=="reusable"){
-      
+
       countr=countr+1
       if(Res[i][[1]]$value$status=="SUCCESS"){
         score=score+1
@@ -74,6 +73,10 @@ Fair_scores<-function(Res,dirXML="."){
   barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Fair Score"),col=c(brocolors("crayons")["Jungle Green"],brocolors("crayons")["Peach"],brocolors("crayons")["Blue Green"],brocolors("crayons")["Cotton Candy"],brocolors("crayons")["Razzmatazz"]))
 }
 
+
+
+
+
 Fair_scores(Res2)
 
 
@@ -85,7 +88,7 @@ Fair_table<-function(Suite_results,dirXML="."){
   names(all) <- checks
   all <- lapply(all, xml_find_all, "type")
   all <- lapply(all, xml_text)
-  
+
   for (i in 1:length(Suite_results)){
     status=Suite_results[[i]]$value$status[[1]]
     message=Suite_results[[i]]$value$output[[1]][[1]]
@@ -106,9 +109,9 @@ Fair_table<-function(Suite_results,dirXML="."){
 
 Fair_pie<-function(Suite_results){
   tab=Fair_table(Suite_results,dirXML=".")
-  
+
   tab$Status <- factor(tab$Status,levels = c("Success", "Failure","Warning")) #reorder for visualisation
-  
+
   # Modify data to use for a graph
   data <- data.frame(
     group=c("Success","Failure","Warning"),
@@ -117,19 +120,19 @@ Fair_pie<-function(Suite_results){
   data$group <- factor(data$group,levels = c("Success", "Failure","Warning")) #reorder for visualisation
   # Compute percentages
   data$fraction <- data$value / sum(data$value)
-  
+
   # Compute the cumulative percentages
   data$ymax <- cumsum(data$fraction)
-  
+
   # Compute the bottom of each rectangle
   data$ymin <- c(0, head(data$ymax, n=-1))
-  
+
   # Compute label position
   data$labelPosition <- (data$ymax + data$ymin) / 2
-  
+
   # Compute a good label
   data$label <- paste0(data$group, "\n ", data$value)
-  
+
   # Make the plot
   return(ggplot(data, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=group)) +
           geom_rect(color="white") +
@@ -143,4 +146,4 @@ Fair_pie<-function(Suite_results){
 }
 Fair_table(Res3)
 Fair_pie(Res3)
-
+roxygen2::roxygenise()
