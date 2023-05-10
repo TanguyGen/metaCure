@@ -1,9 +1,14 @@
 library(metadig)
-setwd("C:/Users/tangu/Desktop/Stage_meta/Curation/Curation/tests/checks")
+setwd("C:/Users/tangu/Desktop/metaCure/metaCure/checks")
 
-metadataFile <-"../Reef_Life_Survey_Fish_Mediterranean_sample.xml"
-  
-metadataFile2 <- "../Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
+metadataFile <-"../ex_data/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
+File<-read_xml(metadataFile)
+style<-read_xml("C:/Users/tangu/Desktop/ouxml2md.xslt")
+stylesheet()
+
+result<-xml_xslt(File,style)
+
+metadataFile2 <- "../ex_data/Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
 suite<-"../Suite.xml"
 
 metadataFile3 <- "../edi.300.6.xml"
@@ -62,11 +67,11 @@ checkFile <- "Distribution_contact.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
-checkFile <- "distribution.id.present.xml" 
+checkFile <- "distribution.id.present.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
-checkFile <- "Attributes_definitions.xml" 
+checkFile <- "Attributes_definitions.xml"
 results <- runCheck(checkFile, metadataFile2)
 results
 
@@ -102,7 +107,7 @@ checkFile <- "metadata.id.resolvable.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
-checkFile <- "storage_type.xml"
+checkFile <- "storage.type.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
@@ -118,7 +123,7 @@ checkFile <- "entity.description.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
-checkFile <- "ressource_license.xml"
+checkFile <- "ressource.license.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
@@ -193,4 +198,6 @@ checkFile <- "attribute.domain.present.xml"
 results <- runCheck(checkFile, metadataFile)
 results
 
-
+checkFile <- "entity.distributionURL.resolvable.xml"
+results <- runCheck(checkFile, metadataFile2)
+results

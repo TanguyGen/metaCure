@@ -27,3 +27,7 @@ body{
   position: relative;
   top: 0px;
 }
+
+div.button{
+  text-align: center;
+}

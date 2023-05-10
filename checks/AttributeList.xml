@@ -3,7 +3,7 @@
    <id>Attribute.List</id>
    <name>Attribute List</name>
    <description>Checks to see if at least one Attribute List concept exists.</description>
-   <type>LTER_Integration</type>
+   <type>reusable</type>
    <level>OPTIONAL</level>
    <environment>rscript</environment>
    <code><![CDATA[

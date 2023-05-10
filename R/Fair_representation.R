@@ -3,23 +3,11 @@ library(metadig)
 library(ggplot2)
 library(broman)
 library(dplyr)
-setwd("C:/Users/tangu/Desktop/metaCure/metaCure")
-dirXML="."
-suite="../Suite/Suite.xml"
-metadataFile <-"../ex_data/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
-
-metadataFile2 <- "../ex_data/Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
-
-metadataFile3 <- "../ex_data/edi.300.6.xml"
 
 
-
-Res1<-runSuite(suite,".",metadataFile)
-Res2<-runSuite(suite,".",metadataFile2)
-Res3<-runSuite(suite,".",metadataFile3)
-
-Fair_scores<-function(Res,dirXML="."){
-  checks <- list.files(dirXML)
+Fair_scores<-function(Res,dir=dirXML){
+  checks <- list.files(dir)
+  checks<-paste0(dirXML,"/",checks)
   all <- lapply(checks, read_xml)
   names(all) <- checks
   all <- lapply(all, xml_find_all, "type")
@@ -75,15 +63,10 @@ Fair_scores<-function(Res,dirXML="."){
 
 
 
-
-
-Fair_scores(Res2)
-
-
-Fair_table<-function(Suite_results,dirXML="."){
+Fair_table<-function(Suite_results,dir=dirXML){
   tab=c()
-  checks <- list.files(dirXML)
-
+  checks <- list.files(dir)
+  checks<-paste0(dirXML,"/",checks)
   all <- lapply(checks, read_xml)
   names(all) <- checks
   all <- lapply(all, xml_find_all, "type")
@@ -104,11 +87,12 @@ Fair_table<-function(Suite_results,dirXML="."){
   }
   tab=data.frame(tab)
   colnames(tab)=c("Status","Message","FAIR")
+  tab<-tab[order(tab$Status),]#reorder for visualisation
   return(tab)
 }
 
 Fair_pie<-function(Suite_results){
-  tab=Fair_table(Suite_results,dirXML=".")
+  tab=Fair_table(Suite_results,dir=dirXML)
 
   tab$Status <- factor(tab$Status,levels = c("Success", "Failure","Warning")) #reorder for visualisation
 
@@ -144,6 +128,3 @@ Fair_pie<-function(Suite_results){
           theme_void() +
           theme(legend.position = "none"))
 }
-Fair_table(Res3)
-Fair_pie(Res3)
-roxygen2::roxygenise()

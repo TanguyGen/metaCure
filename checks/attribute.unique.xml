@@ -3,7 +3,7 @@
     <id>attribute.duplicate</id>
     <name>Duplicate Attribute Check</name>
     <description>Check that all attributes have different names</description>
-    <type>discovery</type>  
+    <type>interoperable</type>
     <level>REQUIRED</level>
     <environment>rscript</environment>
     <code><![CDATA[
@@ -26,4 +26,3 @@
     <xpath>boolean(/*[local-name() = 'eml'])</xpath>
     </dialect>
     </mdq:check>
-    

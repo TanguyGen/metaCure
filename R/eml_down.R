@@ -1,24 +1,26 @@
+library(dplyr)
+library(xslt)
 map_geographical_coverage <- function(eml){
   name <- xml2::xml_find_all(eml, "//geographicCoverage/geographicDescription")
   name <- unlist(xml2::as_list(name))
-  
+
   west <- xml2::xml_find_all(eml, "//geographicCoverage/boundingCoordinates/westBoundingCoordinate")
   west <- as.numeric(unlist(xml2::as_list(west)))
-  
+
   east <- xml2::xml_find_all(eml, "//geographicCoverage/boundingCoordinates/eastBoundingCoordinate")
   east <- as.numeric(unlist(xml2::as_list(east)))
-  
+
   north <- xml2::xml_find_all(eml, "//geographicCoverage/boundingCoordinates/northBoundingCoordinate")
   north <- as.numeric(unlist(xml2::as_list(north)))
-  
+
   south <- xml2::xml_find_all(eml, "//geographicCoverage/boundingCoordinates/southBoundingCoordinate")
   south <- as.numeric(unlist(xml2::as_list(south)))
-  
+
   geo_info <- data.frame(name = name,
                          west = west, east = east,
                          south = south, north = north)
-  
-  map <- leaflet::leaflet(geo_info) %>% 
+
+  map <- leaflet::leaflet(geo_info) %>%
     leaflet::addProviderTiles("CartoDB.Positron") %>%
     leaflet::addRectangles(
       lng1 = west, lat1 = south,
@@ -26,23 +28,23 @@ map_geographical_coverage <- function(eml){
       popup = name,
       fillColor = "transparent"
     )
-  
-  htmlwidgets::saveWidget(map, file = "map.html", selfcontained = FALSE)
+
+  htmlwidgets::saveWidget(map, file = "C:/Users/tangu/Documents/pandoc-test/map.html", selfcontained = FALSE)
 }
 
 write_custom_css <- function(publish_mode){
-  
+
   # get the css we always use
   main_css <- readLines(system.file("template",
                                     "main_custom.css",
                                     package = "emldown"))
-  
+
   edu_css <- readLines(system.file("template",
                                    "educational_custom.css",
                                    package = "emldown"))
-  
+
   writeLines(main_css, con = "custom.css")
-  
+
   if(publish_mode){
     cat(edu_css, file= "custom.css", append = TRUE)
   }
@@ -59,11 +61,13 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
   xml2::write_html(html, outfile)
   # add custom css
   write_custom_css(publish_mode)
-
+  res<-read_html(outfile)
+  return(outfile)
   if (open == TRUE) {
     browseURL(outfile)
+
   }
-  
+
 }
-metadataFile <-"./C:/Users/tangu/Desktop/Stage_meta/Curation/Curation/tests/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
-render_eml(metadataFile2)
+htmltest<-render_eml(file.choose())
+write_html(htmltest,"C:/Users/tangu/Documents/pandoc-test/htmltest.html")
