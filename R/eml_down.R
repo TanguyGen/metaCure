@@ -29,7 +29,7 @@ map_geographical_coverage <- function(eml){
       fillColor = "transparent"
     )
 
-  htmlwidgets::saveWidget(map, file = "C:/Users/tangu/Documents/pandoc-test/map.html", selfcontained = FALSE)
+  htmlwidgets::saveWidget(map, file = "www/map.html", selfcontained = FALSE)
 }
 
 write_custom_css <- function(publish_mode){
@@ -69,5 +69,4 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
   }
 
 }
-htmltest<-render_eml(file.choose())
-write_html(htmltest,"C:/Users/tangu/Documents/pandoc-test/htmltest.html")
+

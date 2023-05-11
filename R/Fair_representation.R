@@ -58,7 +58,7 @@ Fair_scores<-function(Res,dir=dirXML){
   scoreR=(scoreR/countr)*100
   score=(score/length(Res))*100
   data=c(scoreF,scoreA,scoreI,scoreR,score)
-  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Fair Score"),col=c(brocolors("crayons")["Jungle Green"],brocolors("crayons")["Peach"],brocolors("crayons")["Blue Green"],brocolors("crayons")["Cotton Candy"],brocolors("crayons")["Razzmatazz"]))
+  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Mean Fair Score"),col=c(brocolors("crayons")["Jungle Green"],brocolors("crayons")["Peach"],brocolors("crayons")["Blue Green"],brocolors("crayons")["Cotton Candy"],brocolors("crayons")["Razzmatazz"]))
 }
 
 
