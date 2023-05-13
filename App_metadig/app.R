@@ -15,6 +15,7 @@ suite = "../Suite/Suite.xml"
 
 # Define UI ----
 ui <- fluidPage(
+  #application style
   tags$head(includeCSS("www/styles.css")),
   tags$head(
     tags$link(rel = "preconnect", href = "https://fonts.googleapis.com")
@@ -24,6 +25,12 @@ ui <- fluidPage(
   ),
   tags$head(
     tags$link(rel = "stylesheet", href = "https://fonts.googleapis.com/css2?family=Manrope:wght@300&family=Roboto:wght@100&display=swap")
+  ) ,
+  tags$head(
+    tags$link(rel = "stylesheet", href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css")
+  ) ,
+  tags$head(
+    tags$link(rel = "stylesheet", href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js")
   ) ,
   withTags({
     div(
@@ -42,12 +49,15 @@ ui <- fluidPage(
   }),
   navbarPage(
     "Menu",
+    #add upload button
     tabPanel("Upload data",
              div(class = "button",
                  fileInput(
                    "file", h3("Select Metadata"), width = "40%"
                  ))),
+    #dataPaper
     tabPanel("Draft of Data Paper",htmlOutput("html") ),
+    #Add Fair quality Represntations
     tabPanel("Fair Assessment",
              plotOutput("barchart", width = "80%"),
             plotOutput("piechart", width = "100%"),
@@ -86,12 +96,14 @@ server <- function(input, output) {
     }
   })
   output$html <- renderUI({
-    try(includeHTML(render_eml(input$file$datapath)))
+    
+    html<-render_eml(input$file$datapath)
+    map<-reactive(read_html('map.html'))
+    try(list(includeHTML(html),includeCSS("custom.css")),map)
     
   })
 }
 
 
 # Run the app ----d
-
 shinyApp(ui = ui, server = server)

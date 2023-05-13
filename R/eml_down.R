@@ -1,5 +1,7 @@
 library(dplyr)
 library(xslt)
+library(rdrop2)
+
 map_geographical_coverage <- function(eml){
   name <- xml2::xml_find_all(eml, "//geographicCoverage/geographicDescription")
   name <- unlist(xml2::as_list(name))
@@ -28,20 +30,15 @@ map_geographical_coverage <- function(eml){
       popup = name,
       fillColor = "transparent"
     )
-
-  htmlwidgets::saveWidget(map, file = "www/map.html", selfcontained = FALSE)
+  htmlwidgets::saveWidget(map, file = "map.html", selfcontained = T)
 }
 
 write_custom_css <- function(publish_mode){
 
   # get the css we always use
-  main_css <- readLines(system.file("template",
-                                    "main_custom.css",
-                                    package = "emldown"))
+  main_css <- readLines("C:/Users/tangu/Desktop/emldown-master/inst/template/main_custom.css")
 
-  edu_css <- readLines(system.file("template",
-                                   "educational_custom.css",
-                                   package = "emldown"))
+  edu_css <- readLines("C:/Users/tangu/Desktop/emldown-master/inst/template/educational_custom.css")
 
   writeLines(main_css, con = "custom.css")
 
@@ -61,7 +58,6 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
   xml2::write_html(html, outfile)
   # add custom css
   write_custom_css(publish_mode)
-  res<-read_html(outfile)
   return(outfile)
   if (open == TRUE) {
     browseURL(outfile)
@@ -69,4 +65,3 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
   }
 
 }
-
