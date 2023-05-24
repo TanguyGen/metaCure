@@ -30,7 +30,7 @@ map_geographical_coverage <- function(eml){
       popup = name,
       fillColor = "transparent"
     )
-  htmlwidgets::saveWidget(map, file = "map.html", selfcontained = T)
+  htmlwidgets::saveWidget(map, file = "map.html", selfcontained = FALSE)
 }
 
 write_custom_css <- function(publish_mode){
@@ -58,7 +58,7 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
   xml2::write_html(html, outfile)
   # add custom css
   write_custom_css(publish_mode)
-  return(outfile)
+
   if (open == TRUE) {
     browseURL(outfile)
 

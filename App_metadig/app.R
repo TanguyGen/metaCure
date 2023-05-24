@@ -53,7 +53,8 @@ ui <- fluidPage(
     tabPanel("Upload data",
              div(class = "button",
                  fileInput(
-                   "file", h3("Select Metadata"), width = "40%"
+                   "file", h3("Select Metadata"), width = "40%",
+                   placeholder="No Metada selected"
                  ))),
     #dataPaper
     tabPanel("Draft of Data Paper",htmlOutput("html") ),
@@ -92,14 +93,15 @@ server <- function(input, output) {
             c('#fc6847','lightgreen', "#f5b42a")
           )
         )
+      data
       
     }
   })
   output$html <- renderUI({
-    
+    eml<-read_xml(input$file$datapath)
+    map_geographical_coverage(eml)
     html<-render_eml(input$file$datapath)
-    map<-reactive(read_html('map.html'))
-    try(list(includeHTML(html),includeCSS("custom.css")),map)
+    try(list(includeHTML(html),includeCSS("custom.css")))
     
   })
 }
