@@ -36,9 +36,9 @@ map_geographical_coverage <- function(eml){
 write_custom_css <- function(publish_mode){
 
   # get the css we always use
-  main_css <- readLines("C:/Users/tangu/Desktop/emldown-master/inst/template/main_custom.css")
+  main_css <- readLines("template_emldown/main_custom.css")
 
-  edu_css <- readLines("C:/Users/tangu/Desktop/emldown-master/inst/template/educational_custom.css")
+  edu_css <- readLines("template_emldown/educational_custom.css")
 
   writeLines(main_css, con = "custom.css")
 
@@ -51,7 +51,7 @@ render_eml <- function(file, open = TRUE, outfile = "test.html",
                        publish_mode = TRUE, output_dir = "/docs",
                        encoding = "") {
   eml <- xml2::read_xml(file, encoding = encoding)
-  style <- xml2::read_xml("C:/Users/tangu/Desktop/emldown-master/inst/template/bootstrap.xsl")
+  style <- xml2::read_xml("template_emldown/bootstrap.xsl")
   html <- xslt::xml_xslt(eml, style)
   # make map
   map_geographical_coverage(eml)
