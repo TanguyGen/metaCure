@@ -3,14 +3,26 @@ library(xml2)
 library(metadig)
 library(ggplot2)
 library(broman)
+library(ragtop)
 library(dplyr)
+dir<-rstudioapi::getSourceEditorContext()$path
+setwd(dir)
+utils::getSrcDirectory
+setwd("~/GitHub/metacure/bin/")
+rstudioapi::getSourceEditorContext()$path
+
 dirXML="."
-suite="../Suite.xml"
-metadataFile <-"../Reef_Life_Survey_Fish_Mediterranean_sample.xml"
+suite="../Suite/Suite.xml"
+metadataFile <-"../ex_data/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
 
-metadataFile2 <- "../Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
+metadataFile2 <- "../ex_data/Assessing_the_importance_of_field_margins_for_bat_species_and_communities_in_intensive_agricultural_landscapes_-_Data.xml"
 
-metadataFile3 <- "../edi.300.6.xml"
+metadataFile3 <- "../ex_data/edi.300.6.xml"
+
+if(!exists("foo", mode="function")) source("../R/eml_down.R")
+if(!exists("foo2", mode="function")) source("../R/Fair_representation.R")
+if(!exists("foo3", mode="function")) source("../R/Function_url_exists.R")
+
 
 # Define UI ----
 ui <- fluidPage(
