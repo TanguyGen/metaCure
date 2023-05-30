@@ -44,9 +44,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
      
       <xsl:call-template name="addmap"/>
 
-<!--
+
       <xsl:call-template name="geographic_coverage"/>
--->
+
     </div><!-- /.container -->
 
     <div class="container" id="taxonomic">
