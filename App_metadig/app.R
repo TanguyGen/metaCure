@@ -6,11 +6,11 @@ library(broman)
 library(dplyr)
 library(DT)
 
-source("C:/Users/tangu/Desktop/metaCure/metaCure/R/Function_url_exists.R")
-source("C:/Users/tangu/Desktop/metaCure/metaCure/R/Fair_representation.R")
-source("C:/Users/tangu/Desktop/metaCure/metaCure/R/eml_down.R")
-setwd("C:/Users/tangu/Desktop/metaCure/metaCure/App_metadig")
-dirXML = "C:/Users/tangu/Desktop/metaCure/metaCure/checks"
+source("../App_metadig/Function_url_exists.R")
+source("../R/Fair_representation.R")
+source("../R/eml_down.R")
+setwd("../App_metadig")
+dirXML = "../checks"
 suite = "../Suite/Suite.xml"
 
 # Define UI ----

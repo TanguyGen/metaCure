@@ -1,5 +1,5 @@
 library(metadig)
-setwd("C:/Users/tangu/Desktop/metaCure/metaCure/checks")
+setwd("../checks")
 
 metadataFile <-"../ex_data/Reef_Life_Survey_Fish_Mediterranean_sample.xml"
 File<-read_xml(metadataFile)
