@@ -141,4 +141,7 @@
     <check>
     <id>entity.attributeDomain.present</id>
     </check>
+     <check>
+    <id>annotations.presence</id>
+    </check>
     </mdq:suite>
