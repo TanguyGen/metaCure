@@ -1,3 +1,5 @@
+
+
 library(shiny)
 library(xml2)
 library(metadig)
@@ -5,6 +7,7 @@ library(ggplot2)
 library(broman)
 library(dplyr)
 library(DT)
+library(shinycssloaders)
 
 source("../App_metadig/Function_url_exists.R")
 source("../R/Fair_representation.R")
@@ -12,6 +15,9 @@ source("../R/eml_down.R")
 setwd("../App_metadig")
 dirXML = "../checks"
 suite = "../Suite/Suite.xml"
+
+metacure<-function(){
+  
 
 # Define UI ----
 ui <- fluidPage(
@@ -55,12 +61,12 @@ ui <- fluidPage(
                  fileInput(
                    "file", h3("Select Metadata"), width = "40%",
                    placeholder="No Metada selected"
-                 ))),
+                 )),actionButton("do", "Execute")),
     #dataPaper
-    tabPanel("Draft of Data Paper",htmlOutput("html") ),
+    tabPanel("Draft of Data Paper",withSpinner(htmlOutput("html"),type=6)),
     #Add Fair quality Represntations
     tabPanel("Fair Assessment",
-             plotOutput("barchart", width = "80%"),
+             withSpinner(plotOutput("barchart", width = "80%"),type=6),
             plotOutput("piechart", width = "100%"),
             DTOutput("table")
              )
@@ -71,41 +77,50 @@ ui <- fluidPage(
 # Define server logic ----
 # Define server logic ----
 server <- function(input, output) {
-  output$barchart <- renderPlot({
-    try(Fair_scores(runSuite(suite, dirXML, input$file$datapath)), silent =
-          TRUE)
+  
+  output$barchart <-renderPlot(NULL)
+  output$html <- renderUI(NULL)
+  
+  observeEvent(input$do, {
+    output$barchart <- renderPlot({
+      try(Fair_scores(runSuite(suite, dirXML, input$file$datapath)), silent =
+            TRUE)
+    })
+    
+    output$piechart <- renderPlot({
+      try(Fair_pie(runSuite(suite, dirXML, input$file$datapath)), silent =
+            TRUE)
+    })
+    output$table <- renderDT({
+      if (is.character(input$file$datapath)) {
+        data<-Fair_table(runSuite(suite, dirXML, input$file$datapath))
+        data <-data %>%
+          datatable(rownames = FALSE) %>%
+          formatStyle(
+            columns = 'Status',
+            target = 'row',
+            backgroundColor = styleEqual(
+              unique(data$Status),
+              c('#fc6847','lightgreen', "#f5b42a")
+            )
+          )
+        data
+        
+      }
+    })
+    output$html <- renderUI({
+      eml<-read_xml(input$file$datapath)
+      map_geographical_coverage(eml)
+      html<-render_eml(input$file$datapath)
+      file.copy("www/map.html",dirname(input$file$datapath))
+      try(list(includeHTML(html),includeCSS("custom.css")))
+    })
   })
   
-  output$piechart <- renderPlot({
-    try(Fair_pie(runSuite(suite, dirXML, input$file$datapath)), silent =
-          TRUE)
-  })
-  output$table <- renderDT({
-    if (is.character(input$file$datapath)) {
-      data<-Fair_table(runSuite(suite, dirXML, input$file$datapath))
-      data <-data %>%
-        datatable(rownames = FALSE) %>%
-        formatStyle(
-          columns = 'Status',
-          target = 'row',
-          backgroundColor = styleEqual(
-            unique(data$Status),
-            c('#fc6847','lightgreen', "#f5b42a")
-          )
-        )
-      data
-      
-    }
-  })
-  output$html <- renderUI({
-    eml<-read_xml(input$file$datapath)
-    map_geographical_coverage(eml)
-    html<-render_eml(input$file$datapath)
-    try(list(includeHTML(html),includeCSS("custom.css")))
-    
-  })
 }
 
 
 # Run the app ----d
 shinyApp(ui = ui, server = server)
+}
+metacure()
