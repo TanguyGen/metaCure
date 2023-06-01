@@ -4,6 +4,7 @@ library(ggplot2)
 library(broman)
 library(dplyr)
 
+dirXML="../checks"
 
 Fair_scores<-function(Res,dir=dirXML){
   checks <- list.files(dir)
