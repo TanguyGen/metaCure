@@ -95,11 +95,14 @@ Fair_table<-function(Suite_results,dir=dirXML){
 Fair_pie<-function(Suite_results){
   tab=Fair_table(Suite_results,dir=dirXML)
 
+  tab$Status <- factor(tab$Status,levels = c("Success", "Failure","Warning")) #reorder for visualisation
+
   # Modify data to use for a graph
   data <- data.frame(
     group=c("Success","Failure","Warning"),
     value=c(table(tab$Status)[['Success']],table(tab$Status)[['Failure']],table(tab$Status)[['Warning']])
   )
+  data$group <- factor(data$group,levels = c("Success", "Failure","Warning")) #reorder for visualisation
   # Compute percentages
   data$fraction <- data$value / sum(data$value)
 
