@@ -109,7 +109,7 @@ metacure<-function(){
         }
       })
       output$html <- renderUI({
-        eml<-read_xml(input$file$datapath)
+        html<-render_eml(input$file$datapath)
         try(list(includeHTML(html),includeCSS("custom.css")))
       })
     })
