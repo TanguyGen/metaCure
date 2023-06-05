@@ -16,7 +16,6 @@ setwd("../App_metadig")
 dirXML = "../checks"
 suite = "../Suite/Suite.xml"
 
-metacure<-function(){
   
   
   # Define UI ----
@@ -119,5 +118,6 @@ metacure<-function(){
   
   # Run the app ----d
   shinyApp(ui = ui, server = server)
-}
-metacure()
+
+  #runApp("C:/Users/tangu/Desktop/metaCure/metaCure/App_metadig")
+  

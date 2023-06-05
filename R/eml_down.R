@@ -30,7 +30,7 @@ map_geographical_coverage <- function(eml){
       popup = name,
       fillColor = "transparent"
     )
-  htmlwidgets::saveWidget(map, file = "map.html", selfcontained = TRUE)
+  htmlwidgets::saveWidget(map, file = "www/map.html", selfcontained = TRUE)
 }
 
 write_custom_css <- function(publish_mode){
