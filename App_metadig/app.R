@@ -119,5 +119,5 @@ suite = "../Suite/Suite.xml"
   # Run the app ----d
   shinyApp(ui = ui, server = server)
 
-  #runApp("C:/Users/tangu/Desktop/metaCure/metaCure/App_metadig")
+  #runApp("App_metadig")
   
