@@ -47,7 +47,7 @@ write_custom_css <- function(publish_mode){
   }
 }
 
-render_eml <- function(file, open = TRUE, outfile = "test.html",
+render_eml <- function(file, open = TRUE, outfile = "DataPaper.html",
                        publish_mode = TRUE, output_dir = "/docs",
                        encoding = "") {
   eml <- xml2::read_xml(file, encoding = encoding)
