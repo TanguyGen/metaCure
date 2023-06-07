@@ -8,44 +8,32 @@
   <environment>rscript</environment>
   <code><![CDATA[
   library(httr)
-  resolv=c()
-  notresolv=c()
 if (!DistIDPresence) {
-  # check if a Entity Distribution ID is present
+  # check if a metadata identifier is present
   status <- "FAILURE"
-  message <-"No Entity Distribution ID was found."
+  message <-"No metadata Identifier was found."
 } else if(ragtop::is.blank(DistID)) {
   status <- "FAILURE"
   message <-"The entity distribution URL is blank."
 }else{
-  for (i in DistID){
-     resolvable= url_exists(i)
-     if (resolvable){
-      resolv=append(resolv,i)
-     }else{
-      notresolv=append(notresolv,i)
-     }
-  }
-
+  resolvable= url_exists(DistID)
+  print(DistID)
   if (length(DistID)==1){
-    output = paste0("The metadata identifier '",DistID,"' was found ")
+    output = paste0("The metadata identifier '",DistID[0],"' was found ")
   }else{
-    output = paste0("The metadata identifier(s) '",DistID[1],"', first of ",length(DistID)," IDs was found ")
+    output = paste0("The metadata identifier '",DistID[0],"', first of ",length(DistID)," IDs was found ")
   }
 
-  if (length(resolv)>0 & length(notresolv)==0){
-    message = paste0(output," and is/are all resolvable")
+  if (resolvable){
+    message = paste0(output," and is resolvable")
     status = "SUCCESS"
   }
-  else if (length(resolv)==0){
-    message = paste0(output," but none is not resolvable")
+  else{
+    message = paste0(output," but is not resolvable")
     status = "FAILURE"
-  }else{
-    message = paste0(output," but ",notresolv[1]," and ",length(notresolv)-1," others are not resolvable")
-    status = "WARNING"
   }
-}
-
+}     
+  
 
 
     mdq_result <- list(status = status,
@@ -57,7 +45,7 @@ if (!DistIDPresence) {
   </selector>
     <selector>
     <name>DistID</name>
-    <xpath>/eml/dataset/*/physical/distribution/online/url/text()[normalize-space()]</xpath>
+    <xpath>/eml/dataset/*/physical/distribution/online/url[@function="download"]/text()[normalize-space()]</xpath>
   </selector>
   <dialect>
     <name>eml</name>

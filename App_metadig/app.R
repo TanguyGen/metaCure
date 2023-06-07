@@ -1,21 +1,16 @@
-
-
-
 library(shiny)
 library(xml2)
 library(metadig)
 library(ggplot2)
-library(broman)
 library(dplyr)
 library(DT)
 library(shinycssloaders)
 library(rmarkdown)
 library(utils)
 
-source("../App_metadig/Function_url_exists.R")
+source("../R/Function_url_exists.R")
 source("../R/Fair_representation.R")
 source("../R/eml_down.R")
-setwd("../App_metadig")
 dirXML = "../checks"
 suite = "../Suite/Suite.xml"
 
@@ -57,6 +52,7 @@ ui <- fluidPage(
   }),
   navbarPage(
     "Menu",
+    id="menu",
     #add upload button
     tabPanel(
       "Upload data",
@@ -72,24 +68,7 @@ ui <- fluidPage(
       actionButton("do", "Execute")
     ),
     #dataPaper
-    tabPanel(
-      "Draft of Data Paper",
-      fluidRow(
-        downloadButton("paper", label="Download HTML"),
-        downloadButton("docx", label="Download editable file")
-      ),
-      br(),
-      br(),
-      withSpinner(htmlOutput("html"), type = 6)
-    ),
-    #Add Fair quality Represntations
-    tabPanel(
-      "Fair Assessment",
-      withSpinner(plotOutput("barchart", width = "80%"), type =
-                    6),
-      plotOutput("piechart", width = "100%"),
-      DTOutput("table")
-    )
+
   )
 )
 
@@ -97,15 +76,40 @@ ui <- fluidPage(
 # Define server logic ----
 # Define server logic ----
 server <- function(input, output) {
+
+  observeEvent(input$do, {
+    appendTab(inputId = "menu",
+              tabPanel(
+                "Draft of Data Paper",
+                fluidRow(
+                  downloadButton("paper", label = "Download HTML"),
+                  downloadButton("docx", label = "Download editable file")
+                ),
+                br(),
+                br(),
+                withSpinner(htmlOutput("html"), type = 6)
+              )
+    )
+    appendTab(inputId = "menu",
+              #Add Fair quality Represntations
+              tabPanel(
+                "Fair Assessment",
+                withSpinner(plotOutput("barchart", width = "80%"), type =
+                              6),
+                plotOutput("piechart", width = "100%"),
+                DTOutput("table")
+              )
+    )
+  })
   output$barchart <- renderPlot(NULL)
   output$html <- renderUI(NULL)
-  
+
   observeEvent(input$do, {
     output$barchart <- renderPlot({
       try(Fair_scores(runSuite(suite, dirXML, input$file$datapath)), silent =
             TRUE)
     })
-    
+
     output$piechart <- renderPlot({
       try(Fair_pie(runSuite(suite, dirXML, input$file$datapath)), silent =
             TRUE)
@@ -124,34 +128,34 @@ server <- function(input, output) {
             )
           )
         data
-        
+
       }
     })
     output$html <- renderUI({
-      html <- render_eml(input$file$datapath)
-      try(list(includeHTML(html), includeCSS("custom.css")))
+      render_eml(input$file$datapath)
+      try(list(includeHTML("DataPaper.html"), includeCSS("custom.css")))
     })
-    output$docx<-downloadHandler(
-      filename <- paste0("Datapaper",format(Sys.time(), "%s"),".docx"),
-      content <-function(file) {
-        rmarkdown::pandoc_convert("DataPaper.html", output ="DataPaper.docx")
-        file.copy("DataPaper.docx",file)
-      }
-    )
-    output$paper<-downloadHandler(
-      filename <- paste0("Datapaper_",format(Sys.time(), "%s"),".zip"),
-      content <- function(file) {
-        file.copy("www/map.html",".")
-        zip(file, files=c("map.html","DataPaper.html"))
-      }
-    )
-    
+    output$docx <- downloadHandler(filename <-
+                                     paste0("Datapaper", format(Sys.time(), "%s"), ".docx"),
+                                   content <- function(file) {
+                                     rmarkdown::pandoc_convert("DataPaper.html", output = "DataPaper.docx")
+                                     file.copy("DataPaper.docx", file)
+                                   })
+    output$paper <- downloadHandler(filename <-
+                                      paste0("Datapaper_", format(Sys.time(), "%s"), ".zip"),
+                                    content <- function(file) {
+                                      zip(file,
+                                          files = c("www/map.html", "DataPaper.html"),
+                                          extras = '-j')
+                                    })
+
   })
-  
+
 }
 
 
 # Run the app ----d
 shinyApp(ui = ui, server = server)
 
-#runApp("App_metadig")
+#use this function to launch the app
+#runApp(".")

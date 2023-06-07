@@ -1,7 +1,12 @@
 library(dplyr)
 library(xslt)
-library(rdrop2)
 
+#' map_geographical_coverage
+#'Make a map from EML
+#' @param eml Metadata using EML standard in XML format
+#'
+#' @return A map
+#' @export
 map_geographical_coverage <- function(eml){
   name <- xml2::xml_find_all(eml, "//geographicCoverage/geographicDescription")
   name <- unlist(xml2::as_list(name))
@@ -33,6 +38,12 @@ map_geographical_coverage <- function(eml){
   htmlwidgets::saveWidget(map, file = "www/map.html", selfcontained = TRUE)
 }
 
+#' write_custom_css
+#'Write a CSS
+#' @param publish_mode Boolean
+#'
+#' @return a CSS file
+#' @export
 write_custom_css <- function(publish_mode){
 
   # get the css we always use
@@ -47,7 +58,20 @@ write_custom_css <- function(publish_mode){
   }
 }
 
-render_eml <- function(file, open = TRUE, outfile = "DataPaper.html",
+##' Render EML metadata into a webpage
+##'
+##' Pass in an xml file of EML metadata and generate a nice webpage describing
+##' the dataset.
+##'
+##' @title Render EML
+##' @param file A valid Ecological Metadata Language file to be rendered to html.
+##' @param open Whether to open the file in a browser. Defaults to TRUE.
+##' @param outfile Name of output file.
+##' @param publish_mode TRUE. If TRUE the website is pretty without warnings for weird stuff.
+##' @param output_dir directory where will be stored the result file
+##' @param encoding "" encoding of the EML file if necessary
+##' @return HTML file containing dataset information
+render_eml <- function(file, open = FALSE, outfile = "DataPaper.html",
                        publish_mode = TRUE, output_dir = "/docs",
                        encoding = "") {
   eml <- xml2::read_xml(file, encoding = encoding)
@@ -58,7 +82,6 @@ render_eml <- function(file, open = TRUE, outfile = "DataPaper.html",
   xml2::write_html(html, outfile)
   # add custom css
   write_custom_css(publish_mode)
-return(outfile)
   if (open == TRUE) {
     browseURL(outfile)
 

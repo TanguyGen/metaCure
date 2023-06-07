@@ -1,11 +1,12 @@
-Package: metaCure
+Package: metashrimps
 Type: Package
-Title: Check metadata quality
+Title: metashrimps is a package helping in the representation of metadatas FAIR quality and in the production of drafts of Data Papers using EML metadatas
 Version: 0.1.0
 Authors@R: person("Tanguy", "Genthon", email = "tanguy.genthon22@gmail.com",
                   role = c("aut", "cre"))
-Description: This package gives checks and functions and include an API checking the quality of metadatas using FAIR criterias
+Description: This package gives checks and functions and include an API checking the quality of metadatas using FAIR criterias.
 Encoding: UTF-8
+License: GPL-3
 LazyData: true
 Depends: 
     R (>= 3.1)
@@ -14,6 +15,11 @@ Imports:
 	xml2,
 	metadig,
 	ggplot2,
-	broman,
-	dplyr
+	dplyr,
+	shiny,
+	DT,
+	shinycssloaders,
+	rmarkdown,
+	utils,
+	xslt
 RoxygenNote: 7.2.3

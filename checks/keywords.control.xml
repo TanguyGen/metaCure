@@ -3,15 +3,14 @@
     <id>keywords.control</id>
     <name>Keywords Controlled</name>
     <description>Check if a keyword thesaurus is present, indicating that the keywords are controlled.</description>
-    <type>findable</type>  
+    <type>findable</type>
     <level>OPTIONAL</level>
     <environment>rscript</environment>
     <code><![CDATA[
-  
+
   keywordGroupCount = 0
-  naturalKeywordGroupCount = 0
   controlledKeywordGroupCount = 0
- 
+
   # For each resource, check that the attributes defined for it have unique names
   if(length(keywordGroups) == 0){
     message = "No keywords found, unable to check for controlled keywords."
@@ -27,13 +26,10 @@
     if(thesaurusPresent){
       controlledKeywordGroupCount =controlledKeywordGroupCount+ 1
     }
-      
-    else{
-      naturalKeywordGroupCount = naturalKeywordGroupCount+ 1
-    }
-      
+
+
   }
-           
+
   if(controlledKeywordGroupCount > 0){
     if(controlledKeywordGroupCount < keywordGroupCount){
       message = paste0(keywordGroupCount - controlledKeywordGroupCount," groups of keywords are not controlled (from a vocabulary) (out of ",keywordGroupCount," keyword groups.)")
@@ -47,10 +43,10 @@
       status = "WARNING"
   }
   }
-    
+
   mdq_result <- list(status = status,
                          output = list(list(value = message)))
-  
+
 
       ]]></code>
    <selector>
@@ -62,7 +58,7 @@
       </xpath>
       <subSelector>
         <name>thesaurusPresent</name>
-        <xpath>boolean( 
+        <xpath>boolean(
             (./MD_Keywords/thesaurusName and not (./MD_keywords/thesaurusName[@nilReason="unknown"])) or
             (./keywordThesaurus))
         </xpath>

@@ -1,14 +1,21 @@
 library(xml2)
 library(metadig)
 library(ggplot2)
-library(broman)
 library(dplyr)
 
-dirXML="../checks"
 
-Fair_scores<-function(Res,dir=dirXML){
+#' Fair_scores
+#'Function rendering a Fair Quality Score
+#'
+#' @param Res Result of a test suite
+#' @param dir directories where are situated checks
+#'
+#' @return a barplot with scores
+#' @export
+#'
+Fair_scores<-function(Res,dir= "../checks"){
   checks <- list.files(dir)
-  checks<-paste0(dirXML,"/",checks)
+  checks<-paste0("../checks","/",checks)
   all <- lapply(checks, read_xml)
   names(all) <- checks
   all <- lapply(all, xml_find_all, "type")
@@ -59,15 +66,22 @@ Fair_scores<-function(Res,dir=dirXML){
   scoreR=(scoreR/countr)*100
   score=(score/length(Res))*100
   data=c(scoreF,scoreA,scoreI,scoreR,score)
-  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Mean Fair Score"),col=c(brocolors("crayons")["Jungle Green"],brocolors("crayons")["Peach"],brocolors("crayons")["Blue Green"],brocolors("crayons")["Cotton Candy"],brocolors("crayons")["Razzmatazz"]))
+  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Mean Fair Score"),col=c("#3bb08f","#ffcfab" ,"#0d98ba" ,"#ffbcd9","#e3256b"))
 }
 
 
 
-Fair_table<-function(Suite_results,dir=dirXML){
+#' Fair_Table
+#'Make a table of messages for checks
+#' @param Suite_results results of a test suite
+#' @param dir directories where are situated checks
+#'
+#' @return table of checks descriptions
+#' @export
+Fair_table<-function(Suite_results,dir="../checks"){
   tab=c()
   checks <- list.files(dir)
-  checks<-paste0(dirXML,"/",checks)
+  checks<-paste0(dir,"/",checks)
   all <- lapply(checks, read_xml)
   names(all) <- checks
   all <- lapply(all, xml_find_all, "type")
@@ -92,8 +106,14 @@ Fair_table<-function(Suite_results,dir=dirXML){
   return(tab)
 }
 
+#' Fair_pie
+#' Make a pie chart describing the results
+#' @param Suite_results results of the suite of test
+#'
+#' @return a pie chart
+#' @export
 Fair_pie<-function(Suite_results){
-  tab=Fair_table(Suite_results,dir=dirXML)
+  tab=Fair_table(Suite_results,dir="../checks")
 
   tab$Status <- factor(tab$Status,levels = c("Success", "Failure","Warning")) #reorder for visualisation
 
