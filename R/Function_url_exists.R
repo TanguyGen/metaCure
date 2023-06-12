@@ -11,7 +11,7 @@
 #'
 #' @return a boolean
 #' @export
-url_exists <- function(x, non_2xx_return_value = FALSE, quiet = FALSE,...) {
+url_exists <- function(x, non_2xx_return_value = FALSE, quiet = TRUE,...) {
 
   suppressPackageStartupMessages({
     require("httr", quietly = FALSE, warn.conflicts = FALSE)

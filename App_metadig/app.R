@@ -6,7 +6,6 @@ library(DT)
 library(shinycssloaders)
 library(rmarkdown)
 library(utils)
-#webshot::install_phantomjs(force=T)
 
 source("../R/Function_url_exists.R")
 source("../R/Fair_representation.R")
