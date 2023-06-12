@@ -1,7 +1,7 @@
 library(dplyr)
 library(xslt)
 library(xml2)
-library(webshot)
+library(mapview)
 
 #' map_geographical_coverage
 #'Make a map from EML
@@ -37,7 +37,7 @@ map_geographical_coverage <- function(eml){
       popup = name,
       fillColor = "transparent"
     )
-  htmlwidgets::saveWidget(map, file = "www/map.html", selfcontained = TRUE)
+  mapview::mapshot(map, url = "www/map.html", file = "www/map.png")
 }
 
 #' write_custom_css
@@ -85,9 +85,6 @@ render_eml <- function(file, open = FALSE, outfile = "DataPaper.html",
   }
   html <- xslt::xml_xslt(eml, style)
   # make map
-  if(map_img){
-    webshot::webshot(url = "www/map.html", file = "www/map.png")
-  }
   map_geographical_coverage(eml)
   xml2::write_html(html, outfile)
   # add custom css
