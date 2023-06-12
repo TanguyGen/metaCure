@@ -23,8 +23,9 @@
       }else{
         for (i in 1:length(annotationGroups)){
           annotationGroupCount = annotationGroupCount+1
-           value = annotationValue[i]
-           property = annotationProperty[i]
+          #remove white spaces
+           value = gsub(" ", "", annotationValue[i], fixed = TRUE)
+           property =gsub(" ", "", annotationProperty[i], fixed = TRUE)
 
           if (ragtop::is.blank(value)==FALSE){
             ValueURIcount=ValueURIcount+1

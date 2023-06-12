@@ -3,11 +3,10 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:include href="head.xsl"/> 
-<xsl:include href="nav.xsl"/>
 <xsl:include href="temporal_coverage.xsl"/> 
 <xsl:include href="geographic_coverage.xsl"/>
 <xsl:include href="taxonomic_coverage.xsl"/>
-<xsl:include href="dataset.xsl"/>
+<xsl:include href="dataset2.xsl"/>
 <xsl:include href="datatable.xsl"/>
 <xsl:include href="spatraster.xsl"/>
 <xsl:include href="spatvector.xsl"/>
@@ -15,16 +14,15 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="otherentity.xsl"/>
 <xsl:include href="footer.xsl"/>
 <xsl:include href="rights.xsl"/>
-<xsl:include href="addmap.xsl"/>
+<xsl:include href="addmap2.xsl"/>
 <xsl:template match="/">
 <html lang="en">
   
   <xsl:call-template name="head"/>
   <body>
-  <xsl:call-template name="nav"/>
     <div class="container" id="dataset_info">
       <div class="starter-template">
-        <xsl:call-template name="dataset"/>
+        <xsl:call-template name="dataset2"/>
       </div>
     </div>
 
@@ -42,7 +40,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
          Geographic coverage
       </h3>
      
-      <xsl:call-template name="addmap"/>
+      <xsl:call-template name="addmap2"/>
 
 
       <xsl:call-template name="geographic_coverage"/>

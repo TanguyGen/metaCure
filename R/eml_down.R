@@ -1,5 +1,7 @@
 library(dplyr)
 library(xslt)
+library(xml2)
+library(webshot)
 
 #' map_geographical_coverage
 #'Make a map from EML
@@ -54,7 +56,7 @@ write_custom_css <- function(publish_mode){
   writeLines(main_css, con = "custom.css")
 
   if(publish_mode){
-    cat(edu_css, file= "custom.css", append = TRUE)
+    cat(edu_css, file= "www/custom.css", append = TRUE)
   }
 }
 
@@ -70,14 +72,22 @@ write_custom_css <- function(publish_mode){
 ##' @param publish_mode TRUE. If TRUE the website is pretty without warnings for weird stuff.
 ##' @param output_dir directory where will be stored the result file
 ##' @param encoding "" encoding of the EML file if necessary
+##' @param map_img whether you want a image or an html map
 ##' @return HTML file containing dataset information
 render_eml <- function(file, open = FALSE, outfile = "DataPaper.html",
                        publish_mode = TRUE, output_dir = "/docs",
-                       encoding = "") {
+                       encoding = "",map_img=FALSE) {
   eml <- xml2::read_xml(file, encoding = encoding)
-  style <- xml2::read_xml("../template_emldown/bootstrap.xsl")
+  if (map_img){
+    style <- xml2::read_xml("../template_emldown/bootstrap2.xsl")
+  }else {
+    style <- xml2::read_xml("../template_emldown/bootstrap.xsl")
+  }
   html <- xslt::xml_xslt(eml, style)
   # make map
+  if(map_img){
+    webshot::webshot(url = "www/map.html", file = "www/map.png")
+  }
   map_geographical_coverage(eml)
   xml2::write_html(html, outfile)
   # add custom css

@@ -1,12 +1,12 @@
 library(shiny)
 library(xml2)
-library(metadig)
 library(ggplot2)
 library(dplyr)
 library(DT)
 library(shinycssloaders)
 library(rmarkdown)
 library(utils)
+#webshot::install_phantomjs(force=T)
 
 source("../R/Function_url_exists.R")
 source("../R/Fair_representation.R")
@@ -78,45 +78,51 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   observeEvent(input$do, {
-    appendTab(inputId = "menu",
-              tabPanel(
-                "Draft of Data Paper",
-                fluidRow(
-                  downloadButton("paper", label = "Download HTML"),
-                  downloadButton("docx", label = "Download editable file")
-                ),
-                br(),
-                br(),
-                withSpinner(htmlOutput("html"), type = 6)
-              )
-    )
-    appendTab(inputId = "menu",
-              #Add Fair quality Represntations
-              tabPanel(
-                "Fair Assessment",
-                withSpinner(plotOutput("barchart", width = "80%"), type =
-                              6),
-                plotOutput("piechart", width = "100%"),
-                DTOutput("table")
-              )
-    )
+    if (input$do==1){
+      appendTab(inputId = "menu",
+                tabPanel(
+                  "Draft of Data Paper",
+                  fluidRow(
+                    downloadButton("paper", label = "Download HTML"),
+                    downloadButton("docx", label = "Download editable file")
+                  ),
+                  br(),
+                  br(),
+                  withSpinner(htmlOutput("html"), type = 6)
+                )
+      )
+      appendTab(inputId = "menu",
+                #Add Fair quality Represntations
+                tabPanel(
+                  "Fair Assessment",
+                  withSpinner(plotOutput("barchart", width = "80%"), type =
+                                6),
+                  plotOutput("piechart", width = "100%"),
+                  DTOutput("table")
+                )
+      )
+    }
+
   })
   output$barchart <- renderPlot(NULL)
   output$html <- renderUI(NULL)
 
+  Suite<-reactive(
+    runSuite(suite, dirXML, input$file$datapath)
+    )
   observeEvent(input$do, {
     output$barchart <- renderPlot({
-      try(Fair_scores(runSuite(suite, dirXML, input$file$datapath)), silent =
+      try(Fair_scores(Suite()), silent =
             TRUE)
     })
 
     output$piechart <- renderPlot({
-      try(Fair_pie(runSuite(suite, dirXML, input$file$datapath)), silent =
+      try(Fair_pie(Suite()), silent =
             TRUE)
     })
     output$table <- renderDT({
       if (is.character(input$file$datapath)) {
-        data <- Fair_table(runSuite(suite, dirXML, input$file$datapath))
+        data <- Fair_table(Suite())
         data <- data %>%
           datatable(rownames = FALSE) %>%
           formatStyle(
@@ -138,14 +144,15 @@ server <- function(input, output) {
     output$docx <- downloadHandler(filename <-
                                      paste0("Datapaper", format(Sys.time(), "%s"), ".docx"),
                                    content <- function(file) {
-                                     rmarkdown::pandoc_convert("DataPaper.html", output = "DataPaper.docx")
-                                     file.copy("DataPaper.docx", file)
+                                     render_eml(input$file$datapath,outfile = "www/DataPaper2.html", map_img=TRUE)
+                                     rmarkdown::pandoc_convert("DataPaper2.html", output = "DataPaper.docx", options=c("--standalone"),wd="./www")
+                                     file.copy("www/DataPaper.docx", file)
                                    })
     output$paper <- downloadHandler(filename <-
                                       paste0("Datapaper_", format(Sys.time(), "%s"), ".zip"),
                                     content <- function(file) {
                                       zip(file,
-                                          files = c("www/map.html", "DataPaper.html"),
+                                          files = c("www/map.html", "DataPaper.html","www/custom.css"),
                                           extras = '-j')
                                     })
 
