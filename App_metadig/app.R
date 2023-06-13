@@ -66,8 +66,6 @@ ui <- fluidPage(
       ),
       actionButton("do", "Execute")
     )
-    #dataPaper
-
   )
 )
 
