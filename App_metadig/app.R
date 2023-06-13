@@ -65,7 +65,7 @@ ui <- fluidPage(
         )
       ),
       actionButton("do", "Execute")
-    ),
+    )
     #dataPaper
 
   )
@@ -97,7 +97,7 @@ server <- function(input, output) {
                   withSpinner(plotOutput("barchart", width = "80%"), type =
                                 6),
                   plotOutput("piechart", width = "100%"),
-                  DTOutput("table")
+                  DT::DTOutput("table")
                 )
       )
     }
