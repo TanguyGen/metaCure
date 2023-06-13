@@ -66,7 +66,7 @@ Fair_scores<-function(Res,dir= "../checks"){
   scoreR=(scoreR/countr)*100
   score=(score/length(Res))*100
   data=c(scoreF,scoreA,scoreI,scoreR,score)
-  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Mean Fair Score"),col=c("#3bb08f","#ffcfab" ,"#0d98ba" ,"#ffbcd9","#e3256b"))
+  barplot(data,names.arg=c("Findable","Accessible","Interoperable","Reusable","Mean Fair Score"),col=c("#3bb08f","#ffcfab" ,"#0d98ba" ,"#ffbcd9","#e3256b"),ylim=c(0,100))
 }
 
 
