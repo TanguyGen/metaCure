@@ -61,7 +61,7 @@ ui <- fluidPage(
           "file",
           h3("Select Metadata"),
           width = "40%",
-          placeholder = "No Metada selected"
+          placeholder = "No Metadata selected"
         )
       ),
       actionButton("do", "Execute")
