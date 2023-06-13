@@ -32,7 +32,7 @@ Fair_scores<-function(Res,dir= "../checks"){
   for (i in 1:length(Res)){
     if (all[i][[1]]=="findable"){
       countf=countf+1
-      if(Res[1][[1]]$value$status=="SUCCESS"){
+      if(Res[i][[1]]$value$status=="SUCCESS"){
         score=score+1
         scoreF=scoreF+1
       }
