@@ -7,9 +7,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="geographic_coverage.xsl"/>
 <xsl:include href="taxonomic_coverage.xsl"/>
 <xsl:include href="dataset2.xsl"/>
-<xsl:include href="datatable.xsl"/>
-<xsl:include href="spatraster.xsl"/>
-<xsl:include href="spatvector.xsl"/>
+<xsl:include href="datatable2.xsl"/>
+<xsl:include href="spatraster2.xsl"/>
+<xsl:include href="spatvector2.xsl"/>
 <xsl:include href="units.xsl"/>
 <xsl:include href="otherentity.xsl"/>
 <xsl:include href="footer.xsl"/>
@@ -57,21 +57,21 @@ Taxonomic coverage</h3>
          <h3>   
 <span class="glyphicon glyphicon-list-alt"></span>
  Data tables</h3>
-      <xsl:call-template name="datatable"/>
+      <xsl:call-template name="datatable2"/>
     </div><!-- /.container -->
     
     <div class="container" id="spatraster">
          <h3>   
 <span class="glyphicon glyphicon-list-alt"></span>
  Spatial Rasters</h3>
-      <xsl:call-template name="spatraster"/>
+      <xsl:call-template name="spatraster2"/>
     </div><!-- /.container -->
     
     <div class="container" id="spavector">
          <h3>   
 <span class="glyphicon glyphicon-list-alt"></span>
  Spatial Vectors</h3>
-      <xsl:call-template name="spatvector"/>
+      <xsl:call-template name="spatvector2"/>
     </div><!-- /.container -->
     
     <div class="container" id="units">
