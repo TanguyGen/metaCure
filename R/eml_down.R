@@ -76,13 +76,13 @@ write_custom_css <- function(publish_mode){
 ##' @return HTML file containing dataset information
 render_eml <- function(file, open = FALSE, outfile = "DataPaper.html",
                        publish_mode = TRUE, output_dir = "/docs",
-                       encoding = "",map_img=FALSE) {
+                       encoding = "",map_img=FALSE,edit=FALSE) {
   eml <- xml2::read_xml(file, encoding = encoding)
   if (map_img){
     style <- xml2::read_xml("../template_emldown/bootstrap2.xsl")
-  }else {
-    style <- xml2::read_xml("../template_emldown/bootstrap.xsl")
-  }
+  }else if (edit){
+    style <- xml2::read_xml("../template_emldown/bootstrap3.xsl")
+  }else style <- xml2::read_xml("../template_emldown/bootstrap.xsl")
   html <- xslt::xml_xslt(eml, style)
   # make map
   map_geographical_coverage(eml)

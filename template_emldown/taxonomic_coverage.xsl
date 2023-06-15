@@ -6,20 +6,28 @@
         <div class="table-responsive">
             <table class="table table-striped">
                 <tr>
-			  <th>Family</th>
-                    <th>Genus</th>
-			  <th>Species</th>
-                    <th>Common name</th>
+					<th>Rank</th>
+                    <th>Value</th>
                 </tr>
-      			<xsl:for-each select="//dataset/coverage/taxonomicCoverage/taxonomicClassification/taxonomicClassification/taxonomicClassification/taxonomicClassification/taxonomicClassification">
-					<tr>
-						<td><xsl:value-of select="taxonRankValue"/></td>
-						<td><xsl:value-of select="taxonomicClassification/taxonRankValue"/></td>
-                        		<td><xsl:value-of select="taxonomicClassification/taxonomicClassification/taxonRankValue"/></td>
-                        		<td><xsl:value-of select="commonName"/></td>
-                    		</tr>
+      			<xsl:for-each select="//dataset/coverage/taxonomicCoverage/taxonomicClassification">
+					<xsl:call-template name="loop"/>
 				</xsl:for-each>
             </table>
         </div>
+    </xsl:template>
+	<xsl:template name="loop" match="/">
+		<xsl:for-each select="taxonomicClassification">
+			<xsl:choose>
+				<xsl:when test="descendant::taxonomicClassification">
+					<xsl:call-template name="loop"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<tr>
+						<td><xsl:value-of select="taxonRankName"/></td>
+						<td><xsl:value-of select="taxonRankValue"/></td>
+					</tr>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
     </xsl:template>
 </xsl:stylesheet>

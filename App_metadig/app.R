@@ -82,7 +82,8 @@ server <- function(input, output) {
                   "Draft of Data Paper",
                   fluidRow(
                     downloadButton("paper", label = "Download HTML"),
-                    downloadButton("docx", label = "Download editable file")
+                    downloadButton("docx", label = "Download editable file"),
+                    downloadButton("edit", label = "Download editable html")
                   ),
                   br(),
                   br(),
@@ -152,6 +153,12 @@ server <- function(input, output) {
                                       zip(file,
                                           files = c("www/map.html", "DataPaper.html","www/custom.css"),
                                           extras = '-j')
+                                    })
+    output$edit <- downloadHandler(filename <-
+                                      paste0("Datapaper_", format(Sys.time(), "%s"), ".html"),
+                                    content <- function(file) {
+                                      render_eml(input$file$datapath,outfile = "www/DataPaper3.html", edit=TRUE)
+                                      file.copy("www/DataPaper3.html", file)
                                     })
 
   })
