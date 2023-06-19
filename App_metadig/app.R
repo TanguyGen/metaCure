@@ -34,6 +34,9 @@ ui <- fluidPage(
   tags$head(
     tags$link(rel = "stylesheet", href = "http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js")
   ) ,
+  tags$head(
+    tags$script(class="edit", src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js")
+  ),
   withTags({
     div(
       class = "header",
@@ -137,7 +140,7 @@ server <- function(input, output) {
       }
     })
     output$html <- renderUI({
-      render_eml(input$file$datapath)
+      render_eml(input$file$datapath,edit=TRUE)
       try(list(includeHTML("DataPaper.html"), includeCSS("custom.css")))
     })
     output$docx <- downloadHandler(filename <-

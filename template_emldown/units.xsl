@@ -3,6 +3,7 @@
 xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template name="units" match="/">
+	<div class="editor">
     <table class="table">
       <tr>
         <th>unit name</th>
@@ -19,5 +20,6 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         </tr>
       </xsl:for-each>
     </table>
+	</div>
 </xsl:template>
 </xsl:stylesheet>

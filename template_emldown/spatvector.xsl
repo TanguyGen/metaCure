@@ -5,7 +5,7 @@
     <xsl:template name="spatvector" match="/">
     <xsl:for-each select=".//spatialVector">
     <br/>
-    <tr><h4>
+    <tr><h4 class="editor">
     <td><xsl:value-of select="entityName"/></td>
     <td>, <xsl:value-of select="numberOfRecords"/> records</td>,
   <td><xsl:value-of select="entityDescription"/></td></h4>
@@ -15,6 +15,7 @@
     Physical:<xsl:text>&#xA0;</xsl:text><xsl:value-of select="physical/objectName"/>
     </tr>
     <div class="table-responsive">
+	<div class="editor">
     <table class="table table-striped">
     <tr>
     <th>attribute name</th>
@@ -30,6 +31,7 @@
     </xsl:for-each>
     </table>
     </div>
+	</div>
     </xsl:for-each>
     </xsl:template>
     </xsl:stylesheet>

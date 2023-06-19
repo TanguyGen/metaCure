@@ -16,17 +16,21 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:include href="footer.xsl"/>
 <xsl:include href="rights.xsl"/>
 <xsl:include href="addmap.xsl"/>
+<xsl:include href="method.xsl"/>
 <xsl:template match="/">
 <html lang="en">
   
   <xsl:call-template name="head"/>
-  <body id="editor">
+  <body>
   <xsl:call-template name="nav"/>
     <div class="container" id="dataset_info">
       <div class="starter-template">
         <xsl:call-template name="dataset"/>
       </div>
     </div>
+	<div class="container" id="method">
+	<xsl:call-template name="method"/>
+	</div>
 
 <div class="container" id="temporal">
       <h3>
@@ -75,7 +79,6 @@ Taxonomic coverage</h3>
  Spatial Vectors</h3>
       <xsl:call-template name="spatvector"/>
     </div><!-- /.container -->
-    
     <div class="container" id="units">
      <h3>
 <span class="glyphicon glyphicon-glass"></span>
@@ -100,17 +103,53 @@ Taxonomic coverage</h3>
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script id="edit" src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
-    <script id="edit">
-                ClassicEditor
-                        .create( document.querySelector( '#editor' ) )
-                        .then( editor => {
-                                console.log( editor );
-                        } )
-                        .catch( error => {
-                                console.error( error );
-                        } );
+	<script class="edit" src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script>
+    <script class="edit">
+
+ const editors = document.querySelectorAll('.editor');
+    editors.forEach((el) => {
+        ClassicEditor
+            .create(el)
+            .catch( error => {
+             console.error( error );
+            } );	
+});
+				
     </script>
+
+<script>
+window.onload = function() {
+	if(localStorage.getItem('editor')) {
+		document.querySelector('.editor').innerHTML = localStorage.getItem('editor');
+  }
+}
+
+let editBtn = document.querySelector('#edit_content');
+let editor = document.querySelector('.editor');
+
+editBtn.addEventListener('click', () => {
+  // Toggle contentEditable on button click
+	editor.contentEditable = !editor.isContentEditable;
+  
+  // If disabled, save text
+  if(content.contentEditable === 'false') {
+  	localStorage.setItem('editable', editor.innerHTML);
+  }
+});
+</script>
+<script>
+function save() {
+  var htmlContent = [ "<head><meta charset='utf-8'/><title>Test</title></head>", "<style>.container{max-width: 940px;margin: 0 auto;}</style>", "<body><div class="container">'Content Here'</div></body>" ]
+  var bl = new Blob(htmlContent, {type: "text/html"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(bl);
+  a.download = "your-download-name-here.html";
+  a.hidden = true;
+  document.body.appendChild(a);
+  a.innerHTML = "something random - nobody will see this, it doesn't matter what you put here";
+  a.click();
+}
+</script>
   </body>
 
   

@@ -6,6 +6,7 @@
 
         <!-- If there is a rangeOfDates node, create a table of the values -->
         <xsl:if test="//dataset/coverage/temporalCoverage/rangeOfDates">
+			<div class="editor">
             <table class="table table-striped">
                 <tr>
                     <th>Start date</th>
@@ -18,10 +19,12 @@
                     </tr>
                 </xsl:for-each>
             </table>
+			</div>
         </xsl:if>
 
         <!-- If there is a singleDateTime node, create a table of the values -->
         <xsl:if test="//dataset/coverage/temporalCoverage/singleDateTime">
+		<div class="editor">
             <table class="table table-striped">
                 <tr>
                     <th>Date</th>
@@ -32,6 +35,7 @@
                     </tr>
                 </xsl:for-each>    
             </table>
+		</div>
         </xsl:if>
         
     </xsl:template>

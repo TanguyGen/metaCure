@@ -7,7 +7,7 @@
         <div class="row">        
             <xsl:for-each select="//dataset/coverage/geographicCoverage">
                 <div class="col-sm-3">
-
+				<div class="editor">
                     <p><b><xsl:value-of select="geographicDescription"/></b></p>
                     
                     <p>
@@ -18,10 +18,12 @@
                     </p>
 
                 </div>
-                
+               </div>
             </xsl:for-each>
 
         </div>
+		<br/>
+		<br/>
         
     </xsl:template>
 </xsl:stylesheet>

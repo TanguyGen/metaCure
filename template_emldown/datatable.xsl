@@ -5,6 +5,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template name="datatable" match="/">
     <xsl:for-each select=".//dataTable">
     <br/>
+	<div class="editor">
     <tr><h4>
       <td><xsl:value-of select="entityName"/></td>
       <td>, <xsl:value-of select="numberOfRecords"/> records</td>,
@@ -14,7 +15,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <tr>
     Physical:<xsl:text>&#xA0;</xsl:text><xsl:value-of select="physical/objectName"/>
     </tr>
+	</div>
     <div class="table-responsive">
+	<div class="editor">
 <table class="table table-striped">
       <tr>
         <th>attribute name</th>
@@ -30,6 +33,7 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
       </xsl:for-each>
     </table>
     </div>
+	</div>
     </xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
