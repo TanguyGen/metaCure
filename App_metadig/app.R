@@ -82,8 +82,7 @@ server <- function(input, output) {
                   "Draft of Data Paper",
                   fluidRow(
                     downloadButton("paper", label = "Download HTML"),
-                    downloadButton("docx", label = "Download editable file"),
-                    downloadButton("edit", label = "Download editable html")
+                    downloadButton("docx", label = "Download editable file")
                   ),
                   br(),
                   br(),
@@ -101,65 +100,58 @@ server <- function(input, output) {
                 )
       )
     }
+    output$barchart <- renderPlot(NULL)
+    output$html <- renderUI(NULL)
 
-  })
-  output$barchart <- renderPlot(NULL)
-  output$html <- renderUI(NULL)
+    Suite<-reactive(
+      runSuite(suite, dirXML, input$file$datapath)
+    ) %>%
+      bindEvent(input$do)
 
-  Suite<-reactive(
-    runSuite(suite, dirXML, input$file$datapath)
-    )
-  observeEvent(input$do, {
     output$barchart <- renderPlot({
-      try(Fair_scores(Suite()), silent =
-            TRUE)
-    })
+        try(Fair_scores(Suite()), silent =
+              TRUE)
+      })
 
-    output$piechart <- renderPlot({
-      try(Fair_pie(Suite()), silent =
-            TRUE)
-    })
-    output$table <- renderDT({
-      if (is.character(input$file$datapath)) {
-        data <- Fair_table(Suite())
-        data <- data %>%
-          datatable(rownames = FALSE) %>%
-          formatStyle(
-            columns = 'Status',
-            target = 'row',
-            backgroundColor = styleEqual(
-              unique(data$Status),
-              c('#fc6847', 'lightgreen', "#f5b42a")
+      output$piechart <- renderPlot({
+        try(Fair_pie(Suite()), silent =
+              TRUE)
+      })
+      output$table <- renderDT({
+        if (is.character(input$file$datapath)) {
+          data <- Fair_table(Suite())
+          data <- data %>%
+            datatable(rownames = FALSE) %>%
+            formatStyle(
+              columns = 'Status',
+              target = 'row',
+              backgroundColor = styleEqual(
+                unique(data$Status),
+                c('#fc6847', 'lightgreen', "#f5b42a")
+              )
             )
-          )
-        data
+          data
 
-      }
-    })
-    output$html <- renderUI({
-      render_eml(input$file$datapath)
-      try(list(includeHTML("DataPaper.html"), includeCSS("custom.css")))
-    })
-    output$docx <- downloadHandler(filename <-
-                                     paste0("Datapaper", format(Sys.time(), "%s"), ".docx"),
-                                   content <- function(file) {
-                                     render_eml(input$file$datapath,outfile = "www/DataPaper2.html", map_img=TRUE)
-                                     rmarkdown::pandoc_convert("DataPaper2.html", output = "DataPaper.docx", options=c("--standalone"),wd="./www")
-                                     file.copy("www/DataPaper.docx", file)
-                                   })
-    output$paper <- downloadHandler(filename <-
-                                      paste0("Datapaper_", format(Sys.time(), "%s"), ".zip"),
-                                    content <- function(file) {
-                                      zip(file,
-                                          files = c("www/map.html", "DataPaper.html","www/custom.css"),
-                                          extras = '-j')
-                                    })
-    output$edit <- downloadHandler(filename <-
-                                      paste0("Datapaper_", format(Sys.time(), "%s"), ".html"),
-                                    content <- function(file) {
-                                      render_eml(input$file$datapath,outfile = "www/DataPaper3.html", edit=TRUE)
-                                      file.copy("www/DataPaper3.html", file)
-                                    })
+        }
+      })
+      output$html <- renderUI({
+        render_eml(input$file$datapath)
+        try(list(includeHTML("DataPaper.html"), includeCSS("custom.css")))
+      })
+      output$docx <- downloadHandler(filename <-
+                                       paste0("Datapaper", format(Sys.time(), "%s"), ".docx"),
+                                     content <- function(file) {
+                                       render_eml(input$file$datapath,outfile = "www/DataPaper2.html", map_img=TRUE)
+                                       rmarkdown::pandoc_convert("DataPaper2.html", output = "DataPaper.docx", options=c("--standalone"),wd="./www")
+                                       file.copy("www/DataPaper.docx", file)
+                                     })
+      output$paper <- downloadHandler(filename <-
+                                        paste0("Datapaper_", format(Sys.time(), "%s"), ".zip"),
+                                      content <- function(file) {
+                                        zip(file,
+                                            files = c("www/map.html", "DataPaper.html","www/custom.css"),
+                                            extras = '-j')
+                                      })
 
   })
 
