@@ -41,7 +41,7 @@ ui <- fluidPage(
       h1(
         img(
           width = 200,
-          src = "https://www.pndb.fr/static/images/PNDB_logo_bandeau.png",
+          src = "PNDB_logo_bandeau.png",
           class = "topleft"
         )
       ),
