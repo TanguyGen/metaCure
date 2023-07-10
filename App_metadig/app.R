@@ -11,7 +11,7 @@ source("../R/Function_url_exists.R")
 source("../R/Fair_representation.R")
 source("../R/eml_down.R")
 dirXML = "../checks"
-suite = "../Suite/Suite.xml"
+suite = "../files/Suite.xml"
 
 
 
@@ -45,8 +45,7 @@ ui <- fluidPage(
           class = "topleft"
         )
       ),
-      h2("Assessment Report"),
-      h3("FAIR score")
+      h2("Assessment Report")
     )
   }),
   navbarPage(
@@ -95,8 +94,10 @@ server <- function(input, output) {
                   "Fair Assessment",
                   withSpinner(plotOutput("barchart", width = "80%"), type =
                                 6),
-                  plotOutput("piechart", width = "100%"),
-                  DT::DTOutput("table")
+                  withSpinner(plotOutput("piechart", width = "100%"), type =
+                                6),
+                  withSpinner(DT::DTOutput("table"), type =
+                    6)
                 )
       )
     }
